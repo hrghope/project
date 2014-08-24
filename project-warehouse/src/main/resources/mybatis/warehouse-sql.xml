@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="warehouse">
+	<resultMap type="net.vicp.hrghope.warehouse.model.Warehouse" id="warehouse">
+		<id property="id" column="id" />
+		<result property="inDate" column="in_date" />
+		<result property="outDate" column="out_date" />
+		<result property="state" column="state" />
+		<association property="device" javaType="net.vicp.hrghope.warehouse.model.Device">
+			<result property="code" column="dev_code" />
+			<result property="type" column="dev_type" />
+		</association>
+	</resultMap>
+
+	<insert id="insert" parameterType="net.vicp.hrghope.warehouse.model.Warehouse" useGeneratedKeys="true" keyProperty="id">
+		insert into warehouse
+		(dev_code,dev_type,in_date,out_date,state) values (#{device.code},#{device.type},#{inDate},#{outDate},#{state})
+	</insert>
+
+	<select id="selectByStateAndDevCode" parameterType="hashmap" resultMap="warehouse">
+		select * from warehouse where dev_code=#{dev_code} and state=#{state}
+	</select>
+
+	<update id="update" parameterType="net.vicp.hrghope.warehouse.model.Warehouse">
+		update warehouse set out_date=#{outDate},state=#{state} where
+		id=#{id}
+	</update>
+
+	<select id="selectByParam" parameterType="net.vicp.hrghope.warehouse.service.WarehouseQueryParam" resultMap="warehouse">
+		select * from warehouse where 1=1
+		<if test="devCode != null and devCode!=''">
+			and dev_code=#{devCode}
+		</if>
+		<if test="state !=null">
+			<![CDATA[and state=#{state}]]>
+		</if>
+		<if test="inDateBefore !=null">
+			<![CDATA[and in_date<=#{inDateBefore}]]>
+		</if>
+		<if test="inDateAfter !=null">
+			<![CDATA[and in_date>=#{inDateAfter}]]>
+		</if>
+		<if test="outDateBefore !=null">
+			<![CDATA[and out_date<=#{outDateBefore}]]>
+		</if>
+		<if test="outDateAfter !=null">
+			<![CDATA[and out_date>=#{outDateAfter}]]>
+		</if>
+		<if test="startRow !=null">
+			limit #{startRow},#{offset}
+		</if>
+	</select>
+	
+	<select id="countByParam" parameterType="net.vicp.hrghope.warehouse.service.WarehouseQueryParam"  resultType="int" >
+		select count(*) from warehouse where 1=1
+		<if test="devCode != null and devCode!=''">
+			and dev_code=#{devCode}
+		</if>
+		<if test="state !=null">
+			<![CDATA[and state=#{state}]]>
+		</if>
+		<if test="inDateBefore !=null">
+			<![CDATA[and in_date<=#{inDateBefore}]]>
+		</if>
+		<if test="inDateAfter !=null">
+			<![CDATA[and in_date>=#{inDateAfter}]]>
+		</if>
+		<if test="outDateBefore !=null">
+			<![CDATA[and out_date<=#{outDateBefore}]]>
+		</if>
+		<if test="outDateAfter !=null">
+			<![CDATA[and out_date>=#{outDateAfter}]]>
+		</if>
+		
+	</select>
+</mapper>

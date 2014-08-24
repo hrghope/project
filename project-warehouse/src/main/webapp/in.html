@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>设备入库</title>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="./js/util.js"></script>
+		<script type="text/javascript" src="./js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="./css/jquery.dataTables.css">
+		
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="./css/bootstrap.min.css"><!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="./css/bootstrap-theme.min.css"><!-- Optional theme -->
+		<script src="./js/bootstrap.min.js"></script><!-- Latest compiled and minified JavaScript -->
+	</head>
+
+	<body class="container" >
+	
+		<!-- 错误信息 -->
+		<div class="error">
+			<div id="errorMsg"></div>
+		</div>
+		
+		<!-- 输入区 -->
+		<div class="input">
+			<form action="javascript:submitForm()">
+				<label for="device_code">设备码：</label><input type="text"  id="device_code" name="device_code" placeholder="必填" required>
+				<label for="device_type">设备类型：</label><input type="text"  id="device_type" name="device_type">
+				<button  type="submit">确定</button>
+			</form>
+		</div>
+		
+		<!-- 之前录入的记录 -->
+		<div class="inputed_list">
+			<table  class="display">
+				<thead>
+					<tr><th>设备码</th><th>类型</th><th>入库时间</th></tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div>
+	
+	</body>
+
+</html>
+
+<script>
+$(".inputed_list").hide();
+var isTableInited=false
+
+/* $("#confirm").click(function(){
+	 var f = document.getElementsByTagName('form')[0];
+	  if(!f.checkValidity()) {
+	alert();
+	  } 
+	
+	
+}); */
+
+function submitForm(){
+	var ajaxUrl="./service/device/"+$("#device_code").val()+"/in";
+
+	$.ajax({
+		url: ajaxUrl,
+		data:{
+			"devType":$("#device_type").val()
+		}
+	}).done(function(data) {
+		if(data.succeed){
+			//成功入库
+			$(".error").hide();
+			var warehouse=data.model;
+			$(".inputed_list tbody").append("<tr><td>"+warehouse.device.code+"</td><td>"+warehouse.device.type+"</td><td>"+getDateString(warehouse.inDate)+"</td>")
+			$("#device_code").val("");
+			$("#device_type").val("");
+			
+			if(!isTableInited){//初始化表格
+				$('.inputed_list table').dataTable({
+			    	"paging":   false,
+			    	"ordering": false,
+			    	"info":     false,
+			    	"searching": false,
+				} );
+				isTableInited=true;
+				$(".inputed_list").show();
+			}
+			
+		}else{
+			$(".error").show();
+			$("#errorMsg").text(data.errorMsg);//出错信息
+		}
+	});
+}
+</script>

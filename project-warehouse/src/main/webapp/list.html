@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>库存查询</title>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="./js/util.js"></script>
+		<script type="text/javascript" src="./js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="./css/jquery.dataTables.css">
+		
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="./css/bootstrap.min.css"><!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="./css/bootstrap-theme.min.css"><!-- Optional theme -->
+		<script src="./js/bootstrap.min.js"></script><!-- Latest compiled and minified JavaScript -->
+	</head>
+
+	<body class="container"  style="height: 100%">
+		<!-- 错误信息 -->
+		<div class="error">
+			<div id="errorMsg"></div>
+		</div>
+		
+		<!-- 输入区 -->
+		<form class="input form-inline" role="form">
+			<div class="form-group"><label for="device_code" class="control-label">设备码：</label><input type="text"  id="device_code" name="device_code" class="form-control"/></div>
+			<div class="form-group"><label for="device_type" class="control-label">库存状态：</label><select id="state" class="form-control"><option value="">所有</option><option value="IN">入库</option><option value="OUT">出库</option></select></div>
+			<input type="button" id="query" value="查 询" class="btn btn-default"/>
+		</form>
+		
+		<div class="list">
+			<table  class="display">
+				<thead>
+					<tr><th>设备码</th><th>类型</th><th>入库时间</th><th>出库时间</th></tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+			<div class="pagging"><a class="pre">上一页</a><a class="next">下一页</a></div>
+			<input type="hidden" id="pageIndex" value="0"/>
+			<input type="hidden" id="pageCount" value="0"/>
+		</div>
+	
+	</body>
+
+</html>
+
+<script>
+ var table;
+$(document).ready(function(){
+	table=$('.list table').dataTable({
+    	"paging":   false,
+    	"ordering": false,
+    	"info":     false
+	});
+})
+$(".pre").click(function(){
+	var origin=new Number($("#pageIndex").val());
+	if(origin==0){
+		return;
+	}
+	$("#pageIndex").val(origin-1);
+	query();
+});
+
+$(".next").click(function(){
+	var origin=new Number($("#pageIndex").val());
+	if(origin>=$("#pageCount").val()-1){
+		return;
+	}
+	$("#pageIndex").val(origin+1);
+	query();
+});
+
+//查询
+$("#query").click(query);
+//});
+
+function query(){
+	var ajaxUrl="./service/warehouse/list";
+
+	$.ajax({
+		url: ajaxUrl,
+		data:{
+			"devCode":$("#device_code").val(),
+			"state":$("#state").val(),
+			"pageIndex":$("#pageIndex").val()
+		}
+	}).done(function(data) {
+		if(data.succeed){
+			if(data.model.warehouses==null||data.model.warehouses.length==0){
+				return;
+			}
+			$("#pageIndex").val(data.model.pageIndex);
+			$("#pageCount").val(data.model.pageCount);
+			var datas=new Array();
+			$.each(data.model.warehouses,function(index, warehouse){
+				datas.push([warehouse.device.code,warehouse.device.type,getDateString(warehouse.inDate),getDateString(warehouse.outDate)]);
+			  });
+			
+			table.fnClearTable(0); //清空数据
+			table.fnAddData(datas);//重新设置数据
+			table.fnDraw(); //重新绘制
+		}else{
+			$(".error").show();
+			$("#errorMsg").text(data.errorMsg);//出错信息
+		}
+	});
+}
+</script>

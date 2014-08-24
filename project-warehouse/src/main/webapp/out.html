@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>设备出库</title>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="./js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="./js/util.js"></script>
+		<script type="text/javascript" src="./js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="./css/jquery.dataTables.css">
+		
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="./css/bootstrap.min.css"><!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="./css/bootstrap-theme.min.css"><!-- Optional theme -->
+		<script src="./js/bootstrap.min.js"></script><!-- Latest compiled and minified JavaScript -->
+	</head>
+
+	<body class="container">
+		<!-- 入库扫描设备二维码 -->
+		<div id="device_code_input_div">
+			<label for="device_code">请输入设备码：</label><input type="text"  id="device_code_input" name="device_code_input" placeholder="按回车提交"/>
+		</div>
+	
+		<!-- 设备信息 -->
+		<div id="device_info">
+			设备成功出库！设备信息：
+			<table id="device_info_table"  class="display">
+				<thead>
+					<tr><th>设备码</th><th>类型</th><th>入库时间</th><th>出库时间</th></tr>
+				</thead>
+				<tbody>
+					<tr><td id="device_code"></td><td id="device_type"></td><td id="in_date"></td><td id="out_date"></td></tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="error">
+			<div id="errorMsg"></div>
+			<a id="showHistory">显示历史出入库信息</a>
+			<div id="hist_device_info">
+			<table id="hist_device_info_table"  class="display">
+				<thead>
+					<tr><th>设备码</th><th>类型</th><th>入库时间</th><th>出库时间</th></tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div>
+		</div>
+	</body>
+</html>
+<script>
+$("#device_info").hide();
+$("#error").hide();
+$("#device_code_input").keyup(function(e){
+		if (e.keyCode != 13)  return;
+
+		var ajaxUrl="./service/device/"+$("#device_code_input").val()+"/out";
+
+		$.ajax({
+			url: ajaxUrl
+		}).done(function(data) {
+			if(data.succeed){
+				//成功出库
+				$("#error").hide();
+				$("#device_info").show();
+				var warehouse=data.model;
+				
+				$("#warehouse_id").val(warehouse.id);
+				$("#device_code").text(warehouse.device.code);
+				$("#device_type").text(warehouse.device.type);
+				
+				$("#in_date").text(getDateString(warehouse.inDate));
+				$("#out_date").text(getDateString(warehouse.outDate));
+				$('#device_info_table').dataTable({
+			        	"paging":   false,
+			        	"ordering": false,
+			        	"info":     false,
+			        	"searching": false,
+			    } );
+			}else{
+				$("#device_info").hide();
+				$("#error").show();
+				$("#errorMsg").text(data.errorMsg);//出错信息
+			}
+		});
+
+});
+
+$("#showHistory").click(function(){alert()});
+
+</script>
