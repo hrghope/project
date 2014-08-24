@@ -12,6 +12,9 @@
 		<link rel="stylesheet" href="./css/bootstrap.min.css"><!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="./css/bootstrap-theme.min.css"><!-- Optional theme -->
 		<script src="./js/bootstrap.min.js"></script><!-- Latest compiled and minified JavaScript -->
+		
+		<!-- self -->
+		<link rel="stylesheet" href="./css/common.css">
 	</head>
 
 	<body class="container">
@@ -47,45 +50,46 @@
 		</div>
 		</div>
 	</body>
+	
+	<script>
+	$("#device_info").hide();
+	$("#error").hide();
+	$("#device_code_input").keyup(function(e){
+			if (e.keyCode != 13)  return;
+	
+			var ajaxUrl="./service/device/"+$("#device_code_input").val()+"/out";
+	
+			$.ajax({
+				url: ajaxUrl
+			}).done(function(data) {
+				if(data.succeed){
+					//成功出库
+					$("#error").hide();
+					$("#device_info").show();
+					var warehouse=data.model;
+					
+					$("#warehouse_id").val(warehouse.id);
+					$("#device_code").text(warehouse.device.code);
+					$("#device_type").text(warehouse.device.type);
+					
+					$("#in_date").text(getDateString(warehouse.inDate));
+					$("#out_date").text(getDateString(warehouse.outDate));
+					$('#device_info_table').dataTable({
+				        	"paging":   false,
+				        	"ordering": false,
+				        	"info":     false,
+				        	"searching": false,
+				    } );
+				}else{
+					$("#device_info").hide();
+					$("#error").show();
+					$("#errorMsg").text(data.errorMsg);//出错信息
+				}
+			});
+	
+	});
+	
+	$("#showHistory").click(function(){alert()});
+	
+	</script>
 </html>
-<script>
-$("#device_info").hide();
-$("#error").hide();
-$("#device_code_input").keyup(function(e){
-		if (e.keyCode != 13)  return;
-
-		var ajaxUrl="./service/device/"+$("#device_code_input").val()+"/out";
-
-		$.ajax({
-			url: ajaxUrl
-		}).done(function(data) {
-			if(data.succeed){
-				//成功出库
-				$("#error").hide();
-				$("#device_info").show();
-				var warehouse=data.model;
-				
-				$("#warehouse_id").val(warehouse.id);
-				$("#device_code").text(warehouse.device.code);
-				$("#device_type").text(warehouse.device.type);
-				
-				$("#in_date").text(getDateString(warehouse.inDate));
-				$("#out_date").text(getDateString(warehouse.outDate));
-				$('#device_info_table').dataTable({
-			        	"paging":   false,
-			        	"ordering": false,
-			        	"info":     false,
-			        	"searching": false,
-			    } );
-			}else{
-				$("#device_info").hide();
-				$("#error").show();
-				$("#errorMsg").text(data.errorMsg);//出错信息
-			}
-		});
-
-});
-
-$("#showHistory").click(function(){alert()});
-
-</script>

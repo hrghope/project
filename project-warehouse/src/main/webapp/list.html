@@ -12,9 +12,12 @@
 		<link rel="stylesheet" href="./css/bootstrap.min.css"><!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="./css/bootstrap-theme.min.css"><!-- Optional theme -->
 		<script src="./js/bootstrap.min.js"></script><!-- Latest compiled and minified JavaScript -->
+		
+		<!-- self -->
+		<link rel="stylesheet" href="./css/common.css">
 	</head>
 
-	<body class="container"  style="height: 100%">
+	<body class="container">
 		<!-- 错误信息 -->
 		<div class="error">
 			<div id="errorMsg"></div>
@@ -42,69 +45,70 @@
 		</div>
 	
 	</body>
+	
+	<script>
+	 var table;
+	$(document).ready(function(){
+		table=$('.list table').dataTable({
+	    	"paging":   false,
+	    	"ordering": false,
+	    	"info":     false
+		});
+	})
+	
+	$(".pre").click(function(){
+		var origin=new Number($("#pageIndex").val());
+		if(origin==0){
+			return;
+		}
+		$("#pageIndex").val(origin-1);
+		query();
+	});
+	
+	$(".next").click(function(){
+		var origin=new Number($("#pageIndex").val());
+		if(origin>=$("#pageCount").val()-1){
+			return;
+		}
+		$("#pageIndex").val(origin+1);
+		query();
+	});
+	
+	//查询
+	$("#query").click(query);
 
+	
+	function query(){
+		var ajaxUrl="./service/warehouse/list";
+	
+		$.ajax({
+			url: ajaxUrl,
+			data:{
+				"devCode":$("#device_code").val(),
+				"state":$("#state").val(),
+				"pageIndex":$("#pageIndex").val()
+			}
+		}).done(function(data) {
+			if(data.succeed){
+				if(data.model.warehouses==null||data.model.warehouses.length==0){
+					return;
+				}
+				$("#pageIndex").val(data.model.pageIndex);
+				$("#pageCount").val(data.model.pageCount);
+				var datas=new Array();
+				$.each(data.model.warehouses,function(index, warehouse){
+					datas.push([warehouse.device.code,warehouse.device.type,getDateString(warehouse.inDate),getDateString(warehouse.outDate)]);
+				  });
+				
+				table.fnClearTable(0); //清空数据
+				table.fnAddData(datas);//重新设置数据
+				table.fnDraw(); //重新绘制
+			}else{
+				$(".error").show();
+				$("#errorMsg").text(data.errorMsg);//出错信息
+			}
+		});
+	}
+	</script>
 </html>
 
-<script>
- var table;
-$(document).ready(function(){
-	table=$('.list table').dataTable({
-    	"paging":   false,
-    	"ordering": false,
-    	"info":     false
-	});
-})
-$(".pre").click(function(){
-	var origin=new Number($("#pageIndex").val());
-	if(origin==0){
-		return;
-	}
-	$("#pageIndex").val(origin-1);
-	query();
-});
-
-$(".next").click(function(){
-	var origin=new Number($("#pageIndex").val());
-	if(origin>=$("#pageCount").val()-1){
-		return;
-	}
-	$("#pageIndex").val(origin+1);
-	query();
-});
-
-//查询
-$("#query").click(query);
-//});
-
-function query(){
-	var ajaxUrl="./service/warehouse/list";
-
-	$.ajax({
-		url: ajaxUrl,
-		data:{
-			"devCode":$("#device_code").val(),
-			"state":$("#state").val(),
-			"pageIndex":$("#pageIndex").val()
-		}
-	}).done(function(data) {
-		if(data.succeed){
-			if(data.model.warehouses==null||data.model.warehouses.length==0){
-				return;
-			}
-			$("#pageIndex").val(data.model.pageIndex);
-			$("#pageCount").val(data.model.pageCount);
-			var datas=new Array();
-			$.each(data.model.warehouses,function(index, warehouse){
-				datas.push([warehouse.device.code,warehouse.device.type,getDateString(warehouse.inDate),getDateString(warehouse.outDate)]);
-			  });
-			
-			table.fnClearTable(0); //清空数据
-			table.fnAddData(datas);//重新设置数据
-			table.fnDraw(); //重新绘制
-		}else{
-			$(".error").show();
-			$("#errorMsg").text(data.errorMsg);//出错信息
-		}
-	});
-}
-</script>
