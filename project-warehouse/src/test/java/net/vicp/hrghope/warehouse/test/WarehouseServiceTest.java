@@ -26,7 +26,7 @@ public class WarehouseServiceTest extends AbstractTestCase {
 		Warehouse warehouse2 = warehouseService.findByStateAndDevCode(code, WarehouseState.IN);
 		Assert.assertNotNull(warehouse2.getId());
 
-		Warehouse warehouse3 = warehouseService.out(code);
+		Warehouse warehouse3 = warehouseService.out(code,"sss");
 		
 		Assert.assertNotNull(warehouse3.getOutDate());
 		Assert.assertEquals(WarehouseState.OUT, warehouse3.getState());

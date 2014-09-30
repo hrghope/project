@@ -51,8 +51,8 @@ public class DeviceController extends AbstractController {
 	 */
 	@RequestMapping("/{devCode}/out")
 	@ResponseBody
-	public Result<Warehouse> out(@PathVariable("devCode") String devCode) throws WarehouseException {
-		Warehouse warehouse = warehouseService.out(devCode);
+	public Result<Warehouse> out(@PathVariable("devCode") String devCode, @RequestParam String outCompanyName) throws WarehouseException {
+		Warehouse warehouse = warehouseService.out(devCode, outCompanyName);
 		return buildResult(warehouse);
 	}
 

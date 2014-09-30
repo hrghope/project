@@ -28,7 +28,7 @@
 		<div class="input">
 			<form action="javascript:submitForm()">
 				<label for="device_code">设备码：</label><input type="text"  id="device_code" name="device_code" placeholder="必填" required>
-				<label for="device_type">设备类型：</label><input type="text"  id="device_type" name="device_type">
+				<label for="device_type">设备类型：</label><input type="text"  id="device_type" name="device_type"  autocomplete="on">
 				<button  type="submit">确定</button>
 			</form>
 		</div>
@@ -49,7 +49,16 @@
 	
 	<script>
 	$(".inputed_list").hide();
-	var isTableInited=false
+
+	var table;
+	$(document).ready(function(){
+		table=$('.inputed_list table').dataTable({
+	    	"paging":   false,
+	    	"ordering": false,
+	    	"info":     false,
+	    	"searching": false,
+		} );
+	})	
 	
 	function submitForm(){
 		var ajaxUrl="./service/device/"+$("#device_code").val()+"/in";
@@ -62,22 +71,17 @@
 		}).done(function(data) {
 			if(data.succeed){
 				//成功入库
+				$(".inputed_list").show();
 				$(".error").hide();
-				var warehouse=data.model;
-				$(".inputed_list tbody").append("<tr><td>"+warehouse.device.code+"</td><td>"+warehouse.device.type+"</td><td>"+getDateString(warehouse.inDate)+"</td>")
 				$("#device_code").val("");
-				$("#device_type").val("");
-				
-				if(!isTableInited){//初始化表格
-					$('.inputed_list table').dataTable({
-				    	"paging":   false,
-				    	"ordering": false,
-				    	"info":     false,
-				    	"searching": false,
-					} );
-					isTableInited=true;
-					$(".inputed_list").show();
-				}
+
+				var warehouse=data.model;
+				var datas=new Array();
+				datas.push([warehouse.device.code,warehouse.device.type,getDateString(warehouse.inDate),getDateString(warehouse.outDate),warehouse.outCompanyName]);
+
+				//table.fnClearTable(0); //清空数据
+				table.fnAddData(datas);//重新设置数据
+				table.fnDraw(); //重新绘制
 				
 			}else{
 				$(".error").show();

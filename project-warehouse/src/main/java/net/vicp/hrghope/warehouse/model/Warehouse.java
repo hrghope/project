@@ -28,6 +28,8 @@ public class Warehouse {
 
 	private WarehouseState state;
 
+	private String outCompanyName;
+
 	public Long getId() {
 		return id;
 	}
@@ -66,6 +68,14 @@ public class Warehouse {
 
 	public void setState(WarehouseState state) {
 		this.state = state;
+	}
+
+	public String getOutCompanyName() {
+		return outCompanyName;
+	}
+
+	public void setOutCompanyName(String outCompanyName) {
+		this.outCompanyName = outCompanyName;
 	}
 
 }

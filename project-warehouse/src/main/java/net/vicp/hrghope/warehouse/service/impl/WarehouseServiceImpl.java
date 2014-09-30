@@ -38,7 +38,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 	}
 
-	public Warehouse out(String code) throws WarehouseException {
+	public Warehouse out(String code, String outCompanyName) throws WarehouseException {
 		Warehouse warehouse = findByStateAndDevCode(code, WarehouseState.IN);
 
 		if (warehouse == null) {
@@ -46,6 +46,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 		}
 
 		warehouse.setOutDate(new Date());
+		warehouse.setOutCompanyName(outCompanyName);
 		warehouse.setState(WarehouseState.OUT);
 		warehouseDao.update(warehouse);
 		return warehouse;

@@ -9,7 +9,7 @@ public interface WarehouseService {
 
 	Warehouse in(Device device) throws WarehouseException;
 
-	Warehouse out(String code) throws WarehouseException;
+	Warehouse out(String code, String outCompanyName) throws WarehouseException;
 
 	/**
 	 * find {@link Warehouse} recode ,null means not found

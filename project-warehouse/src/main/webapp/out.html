@@ -20,7 +20,11 @@
 	<body class="container">
 		<!-- 入库扫描设备二维码 -->
 		<div id="device_code_input_div">
-			<label for="device_code">请输入设备码：</label><input type="text"  id="device_code_input" name="device_code_input" placeholder="按回车提交"/>
+			<form action="javascript:submitForm()">
+				<label for="device_code">请输入设备码：</label><input type="text"  id="device_code_input" name="device_code_input" placeholder="按回车提交" required/>
+				<label for="out_company_name">请输入出库公司：</label><input type="text"  id="out_company_name" name="out_company_name" placeholder="按回车提交" autocomplete="on"/>
+				<button type="submit">确定</button>
+			</form>
 		</div>
 	
 		<!-- 设备信息 -->
@@ -28,11 +32,10 @@
 			设备成功出库！设备信息：
 			<table id="device_info_table"  class="display">
 				<thead>
-					<tr><th>设备码</th><th>类型</th><th>入库时间</th><th>出库时间</th></tr>
+					<tr><th>设备码</th><th>类型</th><th>入库时间</th><th>出库时间</th><th>出库公司</th></tr>
 				</thead>
 				<tbody>
-					<tr><td id="device_code"></td><td id="device_type"></td><td id="in_date"></td><td id="out_date"></td></tr>
-				</tbody>
+				</tbody> 
 			</table>
 		</div>
 		<div id="error">
@@ -54,40 +57,51 @@
 	<script>
 	$("#device_info").hide();
 	$("#error").hide();
-	$("#device_code_input").keyup(function(e){
-			if (e.keyCode != 13)  return;
+	//$("#device_code_input").keyup(submitForm);
+	//$("#out_company_name").keyup(submitForm);
 	
-			var ajaxUrl="./service/device/"+$("#device_code_input").val()+"/out";
+ 	var table;
+	$(document).ready(function(){
+		table=$('#device_info_table').dataTable({
+        	"paging":   false,
+        	"ordering": false,
+        	"info":     false,
+        	"searching": false,
+   	 	});
+	})
 	
-			$.ajax({
-				url: ajaxUrl
-			}).done(function(data) {
-				if(data.succeed){
-					//成功出库
-					$("#error").hide();
-					$("#device_info").show();
-					var warehouse=data.model;
-					
-					$("#warehouse_id").val(warehouse.id);
-					$("#device_code").text(warehouse.device.code);
-					$("#device_type").text(warehouse.device.type);
-					
-					$("#in_date").text(getDateString(warehouse.inDate));
-					$("#out_date").text(getDateString(warehouse.outDate));
-					$('#device_info_table').dataTable({
-				        	"paging":   false,
-				        	"ordering": false,
-				        	"info":     false,
-				        	"searching": false,
-				    } );
-				}else{
-					$("#device_info").hide();
-					$("#error").show();
-					$("#errorMsg").text(data.errorMsg);//出错信息
-				}
-			});
-	
-	});
+
+	function submitForm(){
+		//if (e.keyCode != 13)  return;
+		
+		var ajaxUrl="./service/device/"+$("#device_code_input").val()+"/out";
+
+		$.ajax({
+			url: ajaxUrl,
+			data:	{
+				"outCompanyName"	:	$("#out_company_name").val()
+			}
+		}).done(function(data) {
+			if(data.succeed){
+				
+				$("#error").hide();
+				$("#device_info").show();
+				var warehouse=data.model;
+
+				var datas=new Array();
+				datas.push([warehouse.device.code,warehouse.device.type,getDateString(warehouse.inDate),getDateString(warehouse.outDate),warehouse.outCompanyName]);
+				
+				//table.fnClearTable(0); //清空数据
+				table.fnAddData(datas);//重新设置数据
+				table.fnDraw(); //重新绘制
+			
+			}else{
+				$("#device_info").hide();
+				$("#error").show();
+				$("#errorMsg").text(data.errorMsg);//出错信息
+			}
+		});
+	}
 	
 	$("#showHistory").click(function(){alert()});
 	

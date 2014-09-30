@@ -6,6 +6,7 @@
 		<id property="id" column="id" />
 		<result property="inDate" column="in_date" />
 		<result property="outDate" column="out_date" />
+		<result property="outCompanyName" column="out_company_name" />
 		<result property="state" column="state" />
 		<association property="device" javaType="net.vicp.hrghope.warehouse.model.Device">
 			<result property="code" column="dev_code" />
@@ -23,7 +24,7 @@
 	</select>
 
 	<update id="update" parameterType="net.vicp.hrghope.warehouse.model.Warehouse">
-		update warehouse set out_date=#{outDate},state=#{state} where
+		update warehouse set out_date=#{outDate},state=#{state},out_company_name=#{outCompanyName} where
 		id=#{id}
 	</update>
 
