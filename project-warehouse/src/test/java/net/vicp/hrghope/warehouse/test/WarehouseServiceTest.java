@@ -1,11 +1,10 @@
 package net.vicp.hrghope.warehouse.test;
 
-import net.vicp.hrghope.warehouse.exception.WarehouseException;
-import net.vicp.hrghope.warehouse.model.Device;
-import net.vicp.hrghope.warehouse.model.Warehouse;
-import net.vicp.hrghope.warehouse.model.WarehouseState;
-import net.vicp.hrghope.warehouse.service.WarehouseService;
-
+import org.hrghope.warehouse.exception.WarehouseException;
+import org.hrghope.warehouse.model.Device;
+import org.hrghope.warehouse.model.Warehouse;
+import org.hrghope.warehouse.model.WarehouseState;
+import org.hrghope.warehouse.service.WarehouseService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

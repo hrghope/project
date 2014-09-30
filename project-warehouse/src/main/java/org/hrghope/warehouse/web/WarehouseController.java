@@ -1,13 +1,12 @@
-package net.vicp.hrghope.warehouse.web;
+package org.hrghope.warehouse.web;
 
 import java.util.Date;
 
-import net.vicp.hrghope.warehouse.model.WarehouseState;
-import net.vicp.hrghope.warehouse.service.WarehouseQueryParam;
-import net.vicp.hrghope.warehouse.service.WarehouseQueryResult;
-import net.vicp.hrghope.warehouse.service.WarehouseService;
-import net.vicp.hrghope.warehouse.util.DateUtil;
-
+import org.hrghope.warehouse.model.WarehouseState;
+import org.hrghope.warehouse.service.WarehouseQueryParam;
+import org.hrghope.warehouse.service.WarehouseQueryResult;
+import org.hrghope.warehouse.service.WarehouseService;
+import org.hrghope.warehouse.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;

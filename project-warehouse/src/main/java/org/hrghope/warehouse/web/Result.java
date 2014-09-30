@@ -1,4 +1,4 @@
-package net.vicp.hrghope.warehouse.web;
+package org.hrghope.warehouse.web;
 
 public class Result<T extends Object> {
 	private final boolean succeed;

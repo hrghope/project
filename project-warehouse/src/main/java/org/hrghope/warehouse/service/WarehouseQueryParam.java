@@ -1,8 +1,8 @@
-package net.vicp.hrghope.warehouse.service;
+package org.hrghope.warehouse.service;
 
 import java.util.Date;
 
-import net.vicp.hrghope.warehouse.model.WarehouseState;
+import org.hrghope.warehouse.model.WarehouseState;
 
 public class WarehouseQueryParam {
 	private String devCode;

@@ -1,11 +1,11 @@
-package net.vicp.hrghope.warehouse.dal.dao;
+package org.hrghope.warehouse.dal.dao;
 
 import java.util.List;
 
-import net.vicp.hrghope.warehouse.exception.WarehouseException;
-import net.vicp.hrghope.warehouse.model.Warehouse;
-import net.vicp.hrghope.warehouse.model.WarehouseState;
-import net.vicp.hrghope.warehouse.service.WarehouseQueryParam;
+import org.hrghope.warehouse.exception.WarehouseException;
+import org.hrghope.warehouse.model.Warehouse;
+import org.hrghope.warehouse.model.WarehouseState;
+import org.hrghope.warehouse.service.WarehouseQueryParam;
 
 public interface WarehouseDao {
 

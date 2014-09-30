@@ -1,4 +1,4 @@
-package net.vicp.hrghope.warehouse.util;
+package org.hrghope.warehouse.util;
 
 import java.util.Calendar;
 import java.util.Date;

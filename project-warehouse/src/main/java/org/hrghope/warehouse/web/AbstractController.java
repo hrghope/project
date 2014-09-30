@@ -1,7 +1,6 @@
-package net.vicp.hrghope.warehouse.web;
+package org.hrghope.warehouse.web;
 
-import net.vicp.hrghope.warehouse.exception.WarehouseException;
-
+import org.hrghope.warehouse.exception.WarehouseException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 

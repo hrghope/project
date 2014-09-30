@@ -1,8 +1,8 @@
-package net.vicp.hrghope.warehouse.service;
+package org.hrghope.warehouse.service;
 
 import java.util.List;
 
-import net.vicp.hrghope.warehouse.model.Warehouse;
+import org.hrghope.warehouse.model.Warehouse;
 
 public class WarehouseQueryResult {
 	private final List<Warehouse> warehouses;

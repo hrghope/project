@@ -1,4 +1,4 @@
-package net.vicp.hrghope.warehouse.exception;
+package org.hrghope.warehouse.exception;
 
 public class WarehouseException extends Exception {
 

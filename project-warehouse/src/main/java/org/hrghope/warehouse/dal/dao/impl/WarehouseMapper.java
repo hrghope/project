@@ -1,10 +1,9 @@
-package net.vicp.hrghope.warehouse.dal.dao.impl;
+package org.hrghope.warehouse.dal.dao.impl;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
-import net.vicp.hrghope.warehouse.model.Warehouse;
-import net.vicp.hrghope.warehouse.model.WarehouseState;
+import org.hrghope.warehouse.model.Warehouse;
+import org.hrghope.warehouse.model.WarehouseState;
 
 public interface WarehouseMapper {
 	@Select("select * from warehouse where code=#{code} and state=#{state}")

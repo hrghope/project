@@ -1,4 +1,4 @@
-package net.vicp.hrghope.warehouse.model;
+package org.hrghope.warehouse.model;
 
 public enum WarehouseState {
 	/**

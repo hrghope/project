@@ -1,13 +1,12 @@
-package net.vicp.hrghope.warehouse.web;
+package org.hrghope.warehouse.web;
 
 import java.util.List;
 
-import net.vicp.hrghope.warehouse.exception.WarehouseException;
-import net.vicp.hrghope.warehouse.model.Device;
-import net.vicp.hrghope.warehouse.model.Warehouse;
-import net.vicp.hrghope.warehouse.service.WarehouseQueryParam;
-import net.vicp.hrghope.warehouse.service.WarehouseService;
-
+import org.hrghope.warehouse.exception.WarehouseException;
+import org.hrghope.warehouse.model.Device;
+import org.hrghope.warehouse.model.Warehouse;
+import org.hrghope.warehouse.service.WarehouseQueryParam;
+import org.hrghope.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,15 +1,14 @@
-package net.vicp.hrghope.warehouse.dal.dao.impl;
+package org.hrghope.warehouse.dal.dao.impl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.vicp.hrghope.warehouse.dal.dao.WarehouseDao;
-import net.vicp.hrghope.warehouse.exception.WarehouseException;
-import net.vicp.hrghope.warehouse.model.Warehouse;
-import net.vicp.hrghope.warehouse.model.WarehouseState;
-import net.vicp.hrghope.warehouse.service.WarehouseQueryParam;
-
+import org.hrghope.warehouse.dal.dao.WarehouseDao;
+import org.hrghope.warehouse.exception.WarehouseException;
+import org.hrghope.warehouse.model.Warehouse;
+import org.hrghope.warehouse.model.WarehouseState;
+import org.hrghope.warehouse.service.WarehouseQueryParam;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Service;
 

@@ -1,19 +1,18 @@
-package net.vicp.hrghope.warehouse.service.impl;
+package org.hrghope.warehouse.service.impl;
 
 import java.util.Date;
 import java.util.List;
 
-import net.vicp.hrghope.warehouse.dal.dao.WarehouseDao;
-import net.vicp.hrghope.warehouse.exception.DeviceAlreadyInWarehouseException;
-import net.vicp.hrghope.warehouse.exception.InWarehouseNotFoundException;
-import net.vicp.hrghope.warehouse.exception.WarehouseException;
-import net.vicp.hrghope.warehouse.model.Device;
-import net.vicp.hrghope.warehouse.model.Warehouse;
-import net.vicp.hrghope.warehouse.model.WarehouseState;
-import net.vicp.hrghope.warehouse.service.WarehouseQueryParam;
-import net.vicp.hrghope.warehouse.service.WarehouseQueryResult;
-import net.vicp.hrghope.warehouse.service.WarehouseService;
-
+import org.hrghope.warehouse.dal.dao.WarehouseDao;
+import org.hrghope.warehouse.exception.DeviceAlreadyInWarehouseException;
+import org.hrghope.warehouse.exception.InWarehouseNotFoundException;
+import org.hrghope.warehouse.exception.WarehouseException;
+import org.hrghope.warehouse.model.Device;
+import org.hrghope.warehouse.model.Warehouse;
+import org.hrghope.warehouse.model.WarehouseState;
+import org.hrghope.warehouse.service.WarehouseQueryParam;
+import org.hrghope.warehouse.service.WarehouseQueryResult;
+import org.hrghope.warehouse.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
