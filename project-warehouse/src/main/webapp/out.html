@@ -83,7 +83,7 @@
 			}
 		}).done(function(data) {
 			if(data.succeed){
-				
+				$("#device_code_input").val("");
 				$("#error").hide();
 				$("#device_info").show();
 				var warehouse=data.model;
